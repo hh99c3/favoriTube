@@ -67,7 +67,9 @@ a:focus {
 #sidebar {
     min-width: 300px;
     max-width: 300px;
-    background: #717171;
+    background: #DE6262; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to bottom, #FFB88C, #DE6262); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #FFB88C, #DE6262);
     color: #fff;
     transition: all 0.3s;
 }
@@ -78,7 +80,6 @@ a:focus {
 
 #sidebar .sidebar-header {
     padding: 20px;
-    background: #717171;
 }
 
 #sidebar .sidebar-header img {
@@ -106,7 +107,6 @@ a:focus {
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
     color: #fff;
-    background: #717171;
 }
 
 a[data-toggle="collapse"] {
@@ -124,7 +124,6 @@ a[data-toggle="collapse"] {
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
-    background: #717171;
 }
 
 ul.CTAs {
