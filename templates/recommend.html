@@ -11,7 +11,7 @@
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <!-- Our Custom CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../static/main_style.css">
 
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
@@ -63,7 +63,7 @@
 
             <ul class="list-unstyled CTAs">
                 <li>
-                    <a href="" class="user">"사용자ID" 님</a>
+                    <span class="user">{{ name }} 님</span>
                 </li>
                 <li>
                     <a href="" class="article">로그아웃</a>
@@ -87,7 +87,7 @@
                 </div>
             </nav>
 
-            <h2>"사용자 ID"님의 FAVORITE</h2>
+            <h2>{{ name }}님의 FAVORITE</h2>
             <div class="row row-cols-1 row-cols-md-4 g-4">
                 <div class="col">
                     <div class="card">
