@@ -123,3 +123,9 @@
     border-color: transparent;
     color: #fff !important;
 }
+
+.help{
+    color: gray;
+    font-size: 2px;
+    font-family: 'Nanum Gothic', sans-serif;
+}
