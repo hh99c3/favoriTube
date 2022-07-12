@@ -6,7 +6,9 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for
 app = Flask(__name__)
 
 from pymongo import MongoClient
-client = MongoClient('mongodb+srv://test:sparta@cluster0.ydgg3.mongodb.net/Cluster0?retryWrites=true&w=majority')
+import certifi
+
+client = MongoClient('mongodb+srv://test:sparta@cluster0.ydgg3.mongodb.net/Cluster0?retryWrites=true&w=majority', tlsCAFile=certifi.where())
 db = client.hanghae
 
 SECRET_KEY = 'SPARTA'
