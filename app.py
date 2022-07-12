@@ -12,10 +12,7 @@ from pymongo import MongoClient
 
 import certifi
 
-# client = MongoClient('mongodb://test:sparta@ac-arc7jbv-shard-00-00.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-01.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-02.lfxuxob.mongodb.net:27017/Cluster0?ssl=true&replicaSet=atlas-3juyq2-shard-0&authSource=admin&retryWrites=true&w=majority', tlsCAFile=certifi.where())
-# db = client.dbsparta
-
-client = MongoClient('mongodb+srv://test:kelly@dbprac0.jnprw.mongodb.net/DBprac0?retryWrites=true&w=majority', tlsCAFile=certifi.where())
+client = MongoClient('mongodb://test:sparta@ac-arc7jbv-shard-00-00.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-01.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-02.lfxuxob.mongodb.net:27017/Cluster0?ssl=true&replicaSet=atlas-3juyq2-shard-0&authSource=admin&retryWrites=true&w=majority', tlsCAFile=certifi.where())
 db = client.dbsparta
 
 SECRET_KEY = 'SPARTA'
@@ -91,16 +88,9 @@ def check_dup():
     return jsonify({'result': 'success', 'exists': exists})
 
 
-
-@app.route('/main')
-def main():
-    myname = 'C반3조'
-    return render_template('main.html', name=myname)
-
 #각 게시판으로 연결
 @app.route('/recommend')
 def recommend():
-
     token_receive = request.cookies.get('mytoken')
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
     user_info = db.users.find_one({'username': payload['id']})
@@ -108,12 +98,11 @@ def recommend():
     user_interest = user_info['category']
 
     recommend_list = []
-
     for interest in user_info['category']:
         for recommend in db.favoritube.find({'cate':interest}, {'_id':False}):
-            recommend_list = recommend
+            recommend_list.append(recommend)
 
-            return  render_template('recommend.html',name=username, recommend_list = recommend_list)
+    return  render_template('recommend.html',name=username, recommend_list = recommend_list, interest_list= user_interest)
 
 
 
@@ -121,10 +110,11 @@ def recommend():
 def subscribe():
     token_receive = request.cookies.get('mytoken')
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    user_info = db.users.find_one({'username': payload['id']})
+    username = user_info['username']
+    user_interest = user_info['category']
 
-    username = db.users.find_one({'username': payload['id']})['username']
-
-    return render_template('subscribe.html', name=username)
+    return render_template('subscribe.html', name=username, interest_list=user_interest)
 
 
 #구독추가 정보를 DB로 POST
