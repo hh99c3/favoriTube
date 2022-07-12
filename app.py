@@ -21,18 +21,16 @@ def main():
     myname = 'C반3조'
     return render_template('main.html', name=myname)
 
-@app.route('/recommend')
-def recommend():
-    return render_template('recommend.html')
-
-@app.route("/recommend_get", methods=["GET"])
-def recommend_get():
-    users_list = list(db.users.find({}, {'_id': False}))
-    return jsonify({'users': users_list})
+@app.route('/recommend/<keyword>')
+def recommend(keyword):
+    myname = 'C반3조'
+    users = list(db.users.find({}, {'_id': False}))
+    return render_template('recommend.html', users= users , name = myname , word = keyword)
 
 @app.route('/subscribe')
 def subscribe():
-    return render_template('subscribe.html')
+    myname = 'C반3조'
+    return render_template('subscribe.html', name = myname)
 
 @app.route("/subscribe", methods=["POST"])
 def subscribe_post():
