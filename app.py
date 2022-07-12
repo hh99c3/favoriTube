@@ -5,11 +5,19 @@ import jwt
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 app = Flask(__name__)
 
+import requests
+from bs4 import BeautifulSoup
+
 from pymongo import MongoClient
+<<<<<<< HEAD
 import certifi
 
 client = MongoClient('mongodb+srv://test:sparta@cluster0.ydgg3.mongodb.net/Cluster0?retryWrites=true&w=majority', tlsCAFile=certifi.where())
 db = client.hanghae
+=======
+client = MongoClient('mongodb://test:sparta@ac-arc7jbv-shard-00-00.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-01.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-02.lfxuxob.mongodb.net:27017/Cluster0?ssl=true&replicaSet=atlas-3juyq2-shard-0&authSource=admin&retryWrites=true&w=majority')
+db = client.dbsparta
+>>>>>>> d7e120dc8bf84b1b77686aacb5079f7c8777331c
 
 SECRET_KEY = 'SPARTA'
 
