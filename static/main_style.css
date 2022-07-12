@@ -80,6 +80,7 @@ a:focus {
 
 #sidebar .sidebar-header {
     padding: 20px;
+    font-size: 1.9em;
 }
 
 #sidebar .sidebar-header img {
@@ -90,6 +91,11 @@ a:focus {
 #sidebar ul.components {
     padding: 20px 0;
     margin-left: 10px
+}
+#sidebar ul a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
 }
 
 #sidebar ul p {
