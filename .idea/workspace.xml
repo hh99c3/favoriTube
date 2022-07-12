@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9b2ea719-74f4-473d-8427-bc17250d7870" name="변경" comment="">
       <change afterPath="$PROJECT_DIR$/templates/main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/recommend.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/recommend.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/subscribe.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/subscribe.html" afterDir="false" />
@@ -91,14 +92,26 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1657615769843</updated>
-      <workItem from="1657615771253" duration="2131000" />
+      <workItem from="1657615771253" duration="2825000" />
+      <workItem from="1657618602481" duration="220000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/prac3$Flask__app_py_.coverage" NAME="Flask (app.py) 커버리지 결과" MODIFIED="1657617258051" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/prac3$Flask__app_py_.coverage" NAME="Flask (app.py) 커버리지 결과" MODIFIED="1657618788305" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>
