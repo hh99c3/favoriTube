@@ -54,9 +54,10 @@
             var checkArray = [];
 
             $("input[name=chk]:checked").each(function () {
-                var tmpVal = $(this).val()
-                checkArray.push(tmpVal);
+                    var cate = $(this).val();
+                checkArray.push(cate)
             })
+
 
             if (checkArray.length == 0) {
                 alert("관심사를 하나 이상 체크하세요!")
