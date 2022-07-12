@@ -117,3 +117,9 @@
 .title {
     text-align: center;
 }
+
+.button.is-sparta {
+    background-color: #DE6262;
+    border-color: transparent;
+    color: #fff !important;
+}

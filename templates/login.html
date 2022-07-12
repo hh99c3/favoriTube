@@ -11,49 +11,89 @@
 
     <title>FavoriTube</title>
 
-        <!-- Our Custom CSS -->
+    <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../static/login_style.css">
 
 
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <script>
+        function sign_in() {
+            let username = $("#input-username").val()
+            let password = $("#input-password").val()
+
+            if (username == "") {
+                $("#help-id-login").text("아이디를 입력해주세요.")
+                $("#input-username").focus()
+                return;
+            } else {
+                $("#help-id-login").text("")
+            }
+
+            if (password == "") {
+                $("#help-password-login").text("비밀번호를 입력해주세요.")
+                $("#input-password").focus()
+                return;
+            } else {
+                $("#help-password-login").text("")
+            }
+            $.ajax({
+                type: "POST",
+                url: "/sign_in",
+                data: {
+                    username_give: username,
+                    password_give: password
+                },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        $.cookie('mytoken', response['token'], {path: '/'});
+                        window.location.replace("/")
+                    } else {
+                        alert(response['msg'])
+                    }
+                }
+            });
+        }
+    </script>
 
 </head>
 <body>
-    <section class="login-block">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8 banner-sec">
-                    <div class="logo">
-                        <h1><img src=https://www.pngmart.com/files/20/Youtube-Logo-Transparent-PNG.png"
-                                 style="max-width: 200px; height: auto"></h1>
-                    </div>
-                    <div class="title">
-                        <h1>FavoriTube</h1>
-                    </div>
+<section class="login-block">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 banner-sec">
+                <div class="logo">
+                    <h1><img src=https://www.pngmart.com/files/20/Youtube-Logo-Transparent-PNG.png"
+                             style="max-width: 200px; height: auto"></h1>
                 </div>
-                <div class="col-md-4 login-sec">
-                    <h2 class="text-center">Login</h2>
-                    <form class="login-form">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1" class="text-uppercase">ID</label>
-                            <input type="text" class="form-control" placeholder="ID">
-
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1" class="text-uppercase">Password</label>
-                            <input type="password" class="form-control" placeholder="Password">
-                            <br>
-                        </div>
-
-                        <div class="form-check">
-                            <button type="register" class="btn btn-login float-right">회원가입</button>
-                            <button type="submit" class="btn btn-login float-right">로그인하기</button>
-                        </div>
-
-                    </form>
+                <div class="title">
+                    <h1>FavoriTube</h1>
                 </div>
             </div>
+            <div class="col-md-4 login-sec">
+                <h2 class="text-center">Login</h2>
+                <form class="login-form">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1" class="text-uppercase">ID</label>
+                        <input type="text" class="form-control"  id="input-username" placeholder="아이디를 입력해주세요">
+                    </div>
+                    <p id="help-id-login" class="help is-danger"></p>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1" class="text-uppercase">Password</label>
+                        <input type="password" class="form-control" id="input-password" placeholder="패스워드를 입력해주세요">
+                        <br>
+                    </div>
+
+                    <div class="form-check">
+                        <button type="button" class="btn btn-login float-right" onclick="location.href='membership'">
+                            회원가입
+                        </button>
+                        <button type="button" class="btn btn-login float-right" onclick="sign_in()">로그인하기</button>
+                    </div>
+
+                </form>
+            </div>
         </div>
-    </section>
+    </div>
+</section>
 </body>
 </html>
