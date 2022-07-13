@@ -5,6 +5,7 @@ import jwt
 import requests
 from bs4 import BeautifulSoup
 from flask import Flask, render_template, request, jsonify, redirect, url_for
+
 app = Flask(__name__)
 
 import requests
@@ -17,21 +18,21 @@ import certifi
 # client = MongoClient('mongodb://test:sparta@ac-arc7jbv-shard-00-00.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-01.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-02.lfxuxob.mongodb.net:27017/Cluster0?ssl=true&replicaSet=atlas-3juyq2-shard-0&authSource=admin&retryWrites=true&w=majority', tlsCAFile=certifi.where())
 # db = client.dbsparta
 
-client = MongoClient('mongodb+srv://test:kelly@DBprac0.jnprw.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=certifi.where())
+client = MongoClient('mongodb+srv://test:kelly@DBprac0.jnprw.mongodb.net/?retryWrites=true&w=majority',
+                     tlsCAFile=certifi.where())
 db = client.dbsparta
 
 SECRET_KEY = 'SPARTA'
-
 
 @app.route('/')
 def home():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user_info = db.users.find_one({'username':payload['id']})
+        user_info = db.users.find_one({'username': payload['id']})
         username = user_info['username']
         user_interest = user_info['category']
-        return render_template('main.html',name=username, interest_list=user_interest)
+        return render_template('main.html', name=username, interest_list=user_interest)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -54,8 +55,8 @@ def sign_in():
     if result is not None:
         from datetime import datetime
         payload = {
-         'id': username_receive,
-         'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
+            'id': username_receive,
+            'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
@@ -64,13 +65,12 @@ def sign_in():
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
-
-#회원가입 페이지로 연결
+# 회원가입 페이지로 연결
 @app.route('/membership')
 def register():
     return render_template('register.html')
 
-#회원가입 정보 DB로 POST
+# 회원가입 정보 DB로 POST
 @app.route('/membership/save', methods=['POST'])
 def sign_up():
     username_receive = request.form['username_give']
@@ -82,73 +82,80 @@ def sign_up():
         "username": username_receive,
         "password": password_hash,
         "category": category_receive
-     }
+    }
     db.users.insert_one(doc)
     return jsonify({'result': 'success'})
 
-
-#DB에 중복되는 아이디가 있는지 확인
+# DB에 중복되는 아이디가 있는지 확인
 @app.route('/membership/check_dup', methods=['POST'])
 def check_dup():
     username_receive = request.form['username_give']
     exists = bool(db.users.find_one({"username": username_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
-
-#각 게시판으로 연결
+# 각 게시판으로 연결
 @app.route('/recommend')
 def recommend():
     token_receive = request.cookies.get('mytoken')
-    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-    user_info = db.users.find_one({'username': payload['id']})
-    username = user_info['username']
-    user_interest = user_info['category']
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({'username': payload['id']})
+        username = user_info['username']
+        user_interest = user_info['category']
 
-    recommend_list = []
-    for interest in user_info['category']:
-        for recommend in db.favoritube.find({'cate':interest}, {'_id':False}):
-            recommend_list.append(recommend)
+        recommend_list = []
+        for interest in user_info['category']:
+            for recommend in db.favoritube.find({'cate': interest}, {'_id': False}):
+                recommend_list.append(recommend)
 
-    return  render_template('recommend.html',name=username, recommend_list = recommend_list, interest_list= user_interest)
-
+        return render_template('recommend.html', name=username, recommend_list=recommend_list, interest_list=user_interest)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
 
 
 @app.route('/subscribe')
 def subscribe():
     token_receive = request.cookies.get('mytoken')
-    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-    user_info = db.users.find_one({'username': payload['id']})
-    username = user_info['username']
-    user_interest = user_info['category']
-    return render_template('subscribe.html', name=username, interest_list=user_interest)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({'username': payload['id']})
+        username = user_info['username']
+        user_interest = user_info['category']
+        return render_template('subscribe.html', name=username, interest_list=user_interest)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
 
-#구독추가 정보를 DB로 POST
+
+# 구독추가 정보를 DB로 POST
 @app.route("/subscribe", methods=["POST"])
 def subscribe_post():
-    title_receive = request.form['title_give']
-    url_receive = request.form['url_give']
-    cate_receive = request.form['cate_give']
-    comment_receive = request.form['comment_give']
+    token_receive = request.cookies.get('mytoken')
+    try:
+        title_receive = request.form['title_give']
+        url_receive = request.form['url_give']
+        cate_receive = request.form['cate_give']
+        comment_receive = request.form['comment_give']
 
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
-    data = requests.get(url_receive, headers=headers)
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+        data = requests.get(url_receive, headers=headers)
 
-    soup = BeautifulSoup(data.text, 'html.parser')
+        soup = BeautifulSoup(data.text, 'html.parser')
 
-    image = soup.select_one('meta[property="og:image"]')['content']
+        image = soup.select_one('meta[property="og:image"]')['content']
 
+        doc = {
+            'url': url_receive,
+            'title': title_receive,
+            'image': image,
+            'cate': cate_receive,
+            'comment': comment_receive
+        }
+        db.favoritube.insert_one(doc)
 
-    doc = {
-        'url': url_receive,
-        'title': title_receive,
-        'image': image,
-        'cate': cate_receive,
-        'comment': comment_receive
-    }
-    db.favoritube.insert_one(doc)
-
-    return jsonify({'msg': '추가 완료!'})
+        return jsonify({'msg': '추가 완료!'})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
