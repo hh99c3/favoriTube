@@ -35,8 +35,12 @@
                 url: '/recommend_add',
                 data: {url_give: rmd_url, cate_give: rmd_cate},
                 success: function (response) {
-                    alert(response['msg'])
-                    window.location.href = "/mylist/" + rmd_cate
+                    if (response['result'] == 'success') {
+                        alert(response['msg'])
+                        window.location.href = "/mylist/" + rmd_cate
+                    } else {
+                        alert(response['msg'])
+                    }
                 }
             });
         }

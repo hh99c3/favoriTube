@@ -120,27 +120,29 @@ def recommend_add():
         url_receive = request.form['url_give']
         cate_receive = request.form['cate_give']
 
+        if db.mylist.find_one({'username':username, 'url':url_receive}):
+            return jsonify({'result': 'fail', 'msg': '이미 등록된 영상입니다.'})
 
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
         data = requests.get(url_receive, headers=headers)
-
         soup = BeautifulSoup(data.text, 'html.parser')
 
         image = soup.select_one('meta[property="og:image"]')['content']
         title = soup.select_one('meta[property="og:title"]')['content']
+        comment = soup.select_one('meta[property="og:description"]')['content']
 
         doc = {
             'username' : username,
             'url': url_receive,
-            'title': cate_receive,
+            'title': title,
             'image': image,
             'cate': cate_receive,
-            'comment': cate_receive + '내용을 변경하세요!'
+            'comment': comment
         }
         db.mylist.insert_one(doc)
 
-        return jsonify({'msg': '추가 완료!'})
+        return jsonify({'result': 'success', 'msg': '추가 완료!'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
@@ -163,7 +165,7 @@ def mylist(keyword):
                 mylist.append(my)
 
         return render_template('mylist.html', name=username, mylist=mylist,
-                               interest_list=user_interest, word = keyword )
+                               interest_list=user_interest, word=keyword)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
@@ -175,12 +177,13 @@ def mylist_post():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({'username': payload['id']})
         username = user_info['username']
-        user_interest = user_info['category']
 
         url_receive = request.form['url_give']
         comment_receive = request.form['comment_give']
-        db.mylist.update_one({'url': url_receive}, {'$set': {'comment': comment_receive}})
+        title_receive = request.form['title_give']
 
+        db.mylist.update_one({'url': url_receive, 'username':username}, {'$set': {'comment': comment_receive}})
+        db.mylist.update_one({'url': url_receive, 'username':username}, {'$set': {'title': title_receive}})
 
         return jsonify({'msg': '수정 완료!'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
@@ -194,11 +197,9 @@ def mylist_delete():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({'username': payload['id']})
         username = user_info['username']
-        user_interest = user_info['category']
 
         url_receive = request.form['url_give']
-        db.mylist.delete_one({'url': url_receive})
-
+        db.mylist.delete_one({'username':username, 'url': url_receive})
 
         return jsonify({'msg': '삭제 완료!'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
@@ -214,6 +215,7 @@ def subscribe():
         user_info = db.users.find_one({'username': payload['id']})
         username = user_info['username']
         user_interest = user_info['category']
+
         return render_template('subscribe.html', name=username, interest_list=user_interest)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
@@ -226,19 +228,26 @@ def subscribe_post():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({'username': payload['id']})
-        username = user_info['username']
 
-        title_receive = request.form['title_give']
+        username = user_info['username']
         url_receive = request.form['url_give']
-        cate_receive = request.form['cate_give']
-        comment_receive = request.form['comment_give']
+        if db.mylist.find_one({'username':username, 'url':url_receive}):
+            return jsonify({'result': 'fail', 'msg': '이미 등록된 영상입니다.'})
 
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
         data = requests.get(url_receive, headers=headers)
-
         soup = BeautifulSoup(data.text, 'html.parser')
 
+        title_receive = request.form['title_give']
+        comment_receive = request.form['comment_give']
+
+        if title_receive == '':
+            title_receive = soup.select_one('meta[property="og:title"]')['content']
+        if comment_receive == '':
+            comment_receive = soup.select_one('meta[property="og:description"]')['content']
+
+        cate_receive = request.form['cate_give']
         image = soup.select_one('meta[property="og:image"]')['content']
 
         doc = {
@@ -251,7 +260,7 @@ def subscribe_post():
         }
         db.mylist.insert_one(doc)
 
-        return jsonify({'msg': '추가 완료!'})
+        return jsonify({'result': 'success', 'msg': '추가 완료!'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 

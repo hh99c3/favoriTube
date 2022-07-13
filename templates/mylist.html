@@ -34,14 +34,15 @@
             window.location.href = "/login"
         }
 
-        function edit(myurl,mytitle) {
+        function edit(myurl,mycate,idx) {
             let url = myurl
-            let my_title = mytitle
-            let comment = $("#" + my_title).val()
+            let title = $('#title' + mycate + idx).val()
+            let comment = $('#comment' + mycate + idx).val()
+
             $.ajax({
                 type: 'POST',
                 url: '/mylist_post',
-                data: { comment_give: comment, url_give: url},
+                data: { comment_give: comment, url_give: url, title_give:title},
                 success: function (response) {
                     alert(response['msg'])
                     window.location.reload()
@@ -129,18 +130,22 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ my.title }}</h5>
                             <p class="card-text">{{ my.comment }}</p>
-                            <button href="#modifySubmenu{{my.title}}" data-toggle="collapse" aria-expanded="false">
-                                수정하기
-                            </button>
-                            <button onclick="delete_post('{{my.url}}')"> 삭제 </button>
-                            <li class="collapse list-unstyled" id="modifySubmenu{{my.title}}">
+                            <button type="button" data-toggle="collapse" data-target="#collapseExample{{loop.index}}" aria-expanded="false"
+                                    aria-controls="collapseExample">수정하기</button>
+                            <button onclick="delete_post('{{my.url}}')">삭제</button>
+                            <div class="collapse" id="collapseExample{{loop.index}}">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">title</span>
+                                    <input id="title{{my.cate}}{{loop.index}}" type="text" class="form-control">
+                                </div>
                                 <div class="input-group">
                                     <span class="input-group-text">채널설명</span>
-                                    <textarea id="{{my.title}}" class="form-control"
-                                              aria-label="With textarea"></textarea>
+                                    <textarea id="comment{{my.cate}}{{loop.index}}" class="form-control" aria-label="With textarea"></textarea>
                                 </div>
-                                <button onclick="edit('{{my.url}}','{{my.title}}','{{my.comment}}' )"> 수정 완료</button>
-                            </li>
+                                <button onclick="edit('{{my.url}}','{{my.cate}}','{{loop.index}}')"> 수정 완료</button>
+                            </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -153,13 +158,6 @@
     <button type="button" onclick="window.location.href = '/subscribe'"
             class="btn btn-secondary btn-lg float-right ">+ 추가하기
     </button>
-        </div>
-    </div>
-    <button type="button" onclick="window.location.href = '/subscribe'"
-            class="btn btn-secondary btn-lg float-right ">+ 추가하기
-    </button>
-
-</div>
 </div>
 
 

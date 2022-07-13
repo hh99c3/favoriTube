@@ -57,9 +57,8 @@
                     var cate = $(this).val();
                 checkArray.push(cate)
             })
-            checkArray.push('기타')
 
-            if (checkArray.length == 1) {
+            if (checkArray.length < 1) {
                 alert("관심사를 하나 이상 체크하세요!")
                 return;
             }
