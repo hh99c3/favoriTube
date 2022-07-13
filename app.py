@@ -188,4 +188,5 @@ def subscribe_post():
         return redirect(url_for("home"))
 
 if __name__ == '__main__':
+    app.jinja_env.add_extension('jinja2.ext.loopcontrols')
     app.run('0.0.0.0', port=5000, debug=True)
