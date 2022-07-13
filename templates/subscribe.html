@@ -89,6 +89,9 @@
                             <a href="/mylist/{{interest}}">{{ interest }}</a>
                         </li>
                         {% endfor %}
+                        <li>
+                            <a href="/mylist/기타">기타</a>
+                        </li>
                     </ul>
                 </li>
             </ul>
@@ -138,6 +141,7 @@
                         {% for interest in interest_list %}
                         <option value={{ interest }}>{{ interest }}</option>
                         {% endfor %}
+                        <option value="기타">기타</option>
                     </select>
                 </div>
                 <div class="input-group">

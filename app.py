@@ -154,6 +154,10 @@ def mylist(keyword):
         user_interest = user_info['category']
 
         mylist = []
+        if (db.mylist.find({'cate':'기타'}, {'_id':False}) is not None):
+            for etc in db.mylist.find({'cate':'기타'}, {'_id':False}):
+                mylist.append(etc)
+
         for interest in user_info['category']:
             for my in db.mylist.find({'cate': interest}, {'_id': False}):
                 mylist.append(my)
