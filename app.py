@@ -2,6 +2,8 @@ import hashlib
 from datetime import timedelta
 
 import jwt
+import requests
+from bs4 import BeautifulSoup
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 app = Flask(__name__)
 
@@ -26,7 +28,6 @@ def home():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-
         user_info = db.users.find_one({'username':payload['id']})
         username = user_info['username']
         user_interest = user_info['category']
@@ -119,9 +120,7 @@ def subscribe():
     user_info = db.users.find_one({'username': payload['id']})
     username = user_info['username']
     user_interest = user_info['category']
-
     return render_template('subscribe.html', name=username, interest_list=user_interest)
-
 
 #구독추가 정보를 DB로 POST
 @app.route("/subscribe", methods=["POST"])
