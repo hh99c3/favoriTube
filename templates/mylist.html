@@ -29,13 +29,15 @@
             crossorigin="anonymous"></script>
     <script>
         function sign_out() {
-                $.removeCookie('mytoken', {path: '/'});
-                alert('로그아웃!')
-                window.location.href = "/login"
-            }
-        function edit() {
-                window.location.href = "/subscribe"
+            $.removeCookie('mytoken', {path: '/'});
+            alert('로그아웃!')
+            window.location.href = "/login"
         }
+
+        function edit() {
+            window.location.href = "/subscribe"
+        }
+
         function delete_post() {
 
         }
@@ -48,7 +50,7 @@
     <nav id="sidebar">
         <div class="sidebar-header">
             <img src="/static/logo.png" width="40px" heigh="30px">
-            <a href = '/'>FAVORITUBE</a>
+            <a href='/'>FAVORITUBE</a>
         </div>
 
         <ul class="list-unstyled components">
@@ -98,37 +100,39 @@
         </nav>
 
         <h2>{{ name }}님의 [{{ word }}] 리스트</h2>
-        <div class="card-deck" id="sub-box" >
+        <div class="card-deck" id="sub-box">
             {% for my in mylist %}
-            {% if word == my.cate %}
-                    <div class="col">
-                        <div class="card">
-                            <a href="{{ my.url }}"><img src="{{ my.image }}" class="card-img-top" alt="Card image cap"> </a>
-                            <div class="card-body">
-                                <h5 class="card-title">{{ my.title }}</h5>
-                                <p class="card-text">{{ my.comment }}</p>
+                {% if (word == my.cate) and (name == my.username) %}
+                <div class="col">
+                    <div class="card">
+                        <a href="{{ my.url }}"><img src="{{ my.image }}" class="card-img-top" alt="Card image cap"> </a>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ my.title }}</h5>
+                            <p class="card-text">{{ my.comment }}</p>
 
-                                <button href="#modifySubmenu{{my.title}}" data-toggle="collapse" aria-expanded="false" >수정하기</button>
-                                <li class="collapse list-unstyled" id="modifySubmenu{{my.title}}">
-                                    <div class="input-group ">
-                                        <span class="input-group-text">title</span>
-                                        <input id="title" type="text" class="form-control">
-                                    </div>
-                                    <div class="input-group">
-                                        <span class="input-group-text">채널설명</span>
-                                        <textarea id="comment" class="form-control"
-                                                  aria-label="With textarea"></textarea>
-                                    </div>
-                                    <button> 수정 완료 </button>
-                                </li>
-
-                            </div>
+                            <button href="#modifySubmenu{{my.title}}" data-toggle="collapse" aria-expanded="false">수정하기
+                            </button>
+                            <li class="collapse list-unstyled" id="modifySubmenu{{my.title}}">
+                                <div class="input-group ">
+                                    <span class="input-group-text">title</span>
+                                    <input id="title" type="text" class="form-control">
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-text">채널설명</span>
+                                    <textarea id="comment" class="form-control"
+                                              aria-label="With textarea"></textarea>
+                                </div>
+                                <button> 수정 완료</button>
+                            </li>
                         </div>
                     </div>
-            {% endif %}
+                </div>
+                {% endif %}
             {% endfor %}
         </div>
-        <button type="button" onclick="window.location.href = '/subscribe'" class="btn btn-secondary btn-lg float-right ">+ 추가하기</button>
+        <button type="button" onclick="window.location.href = '/subscribe'"
+                class="btn btn-secondary btn-lg float-right ">+ 추가하기
+        </button>
 
     </div>
 </div>
