@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Collapsible sidebar using Bootstrap 4</title>
+    <title>FavoriTube</title>
 
 
     <!-- Bootstrap CSS CDN -->
@@ -17,7 +17,9 @@
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js">
         integrity = "sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin = "anonymous" ></script>
+        crossorigin = "anonymous" </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
             integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
@@ -25,6 +27,13 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
             integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
             crossorigin="anonymous"></script>
+    <script>
+        function sign_out() {
+                $.removeCookie('mytoken', {path: '/'});
+                alert('로그아웃!')
+                window.location.href = "/login"
+            }
+    </script>
 </head>
 
 <body>
@@ -33,26 +42,24 @@
     <nav id="sidebar">
         <div class="sidebar-header">
             <img src="/static/logo.png" width="40px" heigh="30px">
-            <a href = '/main'>FAVORITUBE</a>
+            <a href = '/'>FAVORITUBE</a>
         </div>
 
         <ul class="list-unstyled components">
             <p>카테고리</p>
-              <a href="/recommend/추천리스트">추천리스트</a>
+              <a href="/recommend">추천리스트</a>
             <li>
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">나의 리스트</a>
                 <ul class="collapse list-unstyled" id="pageSubmenu">
                     <li>
-                        <a href="/recommend/먹방">먹방</a>
+                        <a href="/recommend/나의리스트">나의 리스트</a>
                     </li>
+                {% for interest in interest_list %}
                     <li>
-                        <a href="/recommend/스포츠">스포츠</a>
+                        <a href="/recommend/{{ interest }}">{{ interest }}</a>
                     </li>
-                    <li>
-                        <a href="/recommend/주식">주식</a>
-                    </li>
+                {% endfor %}
                 </ul>
-            </li>
             </li>
         </ul>
 
@@ -61,7 +68,7 @@
                 <span class="user">{{ name }} 님</span>
             </li>
             <li>
-                <a href="" class="article">로그아웃</a>
+                <button onclick="sign_out()">로그아웃</button>
             </li>
         </ul>
     </nav>
@@ -85,20 +92,17 @@
         </nav>
 
         <h2>{{ name }}님의 FAVORITE</h2>
-        <h3 >{{ word }}</h3>
         <div class="card-deck" id="sub-box" >
-            {% for user in users %}
-                {% if user.cate == word %}
-                <div class="col">
-                    <div class="card">
-                        <a href="{{ user.url }}"><img src="{{ user.image }}" class="card-img-top" alt="Card image cap"> </a>
-                        <div class="card-body">
-                            <h5 class="card-title">{{ user.title }}</h5>
-                            <p class="card-text">{{ user.comment }}</p>
+            {% for rmd in recommend_list %}
+                    <div class="col">
+                        <div class="card">
+                            <a href="{{ rmd.url }}"><img src="{{ rmd.image }}" class="card-img-top" alt="Card image cap"> </a>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ rmd.title }}</h5>
+                                <p class="card-text">{{ rmd.comment }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                {% endif %}
             {% endfor %}
         </div>
         <button type="button" onclick="window.location.href = '/subscribe'" class="btn btn-secondary btn-lg float-right ">+ 추가하기</button>
