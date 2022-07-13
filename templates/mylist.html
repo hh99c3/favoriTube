@@ -37,14 +37,7 @@
         function edit(myurl,mycomment) {
             let url = myurl
             let my_comment = mycomment
-<<<<<<< HEAD
             let comment = $("#" + my_comment).val()
-=======
-            console.log(url,mytitle,mycomment)
-            let title = $("." + my_title).val()
-            let comment = $("." + my_comment).val()
-            console.log(title, comment)
->>>>>>> 8dbfcc27e1b202dd5eb3619d9f7b43c263f64201
             $.ajax({
                 type: 'POST',
                 url: '/mylist_post',
@@ -56,8 +49,17 @@
             });
         }
 
-        function delete_post() {
-
+        function delete_post(myurl) {
+            let url = myurl
+            $.ajax({
+                type: 'POST',
+                url: '/mylist_delete',
+                data: {url_give: url},
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload()
+                }
+            });
         }
     </script>
 </head>
@@ -128,8 +130,9 @@
                         <h5 class="card-title">{{ my.title }}</h5>
                         <p class="card-text">{{ my.comment }}</p>
                         <button href="#modifySubmenu{{my.title}}" data-toggle="collapse" aria-expanded="false">
-                            내용 수정하기
+                            수정하기
                         </button>
+                        <button onclick="delete_post('{{my.url}}')"> 삭제 </button>
                         <li class="collapse list-unstyled" id="modifySubmenu{{my.title}}">
                             <div class="input-group">
                                 <span class="input-group-text">채널설명</span>
@@ -141,13 +144,17 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
+            {% endfor %}
         </div>
-        {% endif %}
-        {% endfor %}
     </div>
-</div>
-<button type="button" onclick="window.location.href = '/subscribe'"
-        class="btn btn-secondary btn-lg float-right ">+ 추가하기
+    <button type="button" onclick="window.location.href = '/subscribe'"
+            class="btn btn-secondary btn-lg float-right ">+ 추가하기
+    </button>
+        </div>
+    </div>
+    <button type="button" onclick="window.location.href = '/subscribe'"
+            class="btn btn-secondary btn-lg float-right ">+ 추가하기
     </button>
 
 </div>
