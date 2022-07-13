@@ -116,14 +116,13 @@
         <h2>{{ name }}님의 [{{ word }}] 리스트</h2>
         <div class="card-deck" id="sub-box">
             {% for my in mylist %}
-            {% if word == my.cate %}
-                    <div class="col">
-                        <div class="card">
-                            <a href="{{ my.url }}"><img src="{{ my.image }}" class="card-img-top" alt="Card image cap"> </a>
+            {% if (word == my.cate) and (name == my.username) %}
+            <div class="col">
+                <div class="card">
+                    <a href="{{ my.url }}"><img src="{{ my.image }}" class="card-img-top" alt="Card image cap"> </a>
                             <div class="card-body">
                                 <h5 class="card-title">{{ my.title }}</h5>
                                 <p class="card-text">{{ my.comment }}</p>
-
                                 <button href="#modifySubmenu{{my.title}}" data-toggle="collapse" aria-expanded="false">
                                     수정하기
                                 </button>

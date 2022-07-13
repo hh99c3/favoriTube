@@ -140,8 +140,9 @@ def mylist_post():
         url_receive = request.form['url_give']
         title_receive = request.form['title_give']
         comment_receive = request.form['comment_give']
-        db.mylist.update_one({'url': url_receive}, {'$set': {'title': title_receive }},)
-        db.mylist.update_one({'url': url_receive}, {'$set': {'comment': comment_receive}}, )
+        print(title_receive,comment_receive)
+        db.mylist.update_one({'url': url_receive}, {'$set': {'title': title_receive}})
+        db.mylist.update_one({'url': url_receive}, {'$set': {'comment': comment_receive}})
 
 
         return jsonify({'msg': '수정 완료!'})
