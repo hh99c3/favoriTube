@@ -129,6 +129,20 @@ def mylist(keyword):
         return redirect(url_for("home"))
 
 
+@app.route('/mylist_post' , methods=["POST"])
+def mylist_post():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({'username': payload['id']})
+        username = user_info['username']
+        user_interest = user_info['category']
+
+
+        return jsonify({'msg': '수정 완료!'})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
 @app.route('/subscribe')
 def subscribe():
     token_receive = request.cookies.get('mytoken')
