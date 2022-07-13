@@ -92,11 +92,15 @@
         </nav>
 
         <h2>{{ name }}님의 FAVORITE</h2>
-        <div class="card-deck" id="sub-box" >
-            {% for rmd in recommend_list %}
+        <div class="card-category">
+            {% for interest in interest_list %} <br><br><h3 class="card-category"><{{ interest }}></h3>
+            <div class="card-deck" id="sub-box">
+                {% for rmd in recommend_list %}
+                    {% if rmd.cate == interest %}
                     <div class="col">
                         <div class="card">
-                            <a href="{{ rmd.url }}"><img src="{{ rmd.image }}" class="card-img-top" alt="Card image cap"> </a>
+                            <a href="{{ rmd.url }}"><img src="{{ rmd.image }}" class="card-img-top" alt="Card image cap">
+                            </a>
                             <div class="card-body">
                                 <h5 class="card-title">{{ rmd.title }}</h5>
                                 <p class="card-text">{{ rmd.comment }}</p>
@@ -104,8 +108,14 @@
                             <button>나의 리스트 - '{{ rmd.cate }}'에 추가</button>
                         </div>
                     </div>
+                    {% else %}
+                        {% continue %}
+                    {% endif %}
+                {% endfor %}
+            </div>
             {% endfor %}
         </div>
+
         <button type="button" onclick="window.location.href = '/subscribe'" class="btn btn-secondary btn-lg float-right ">+ 추가하기</button>
 
     </div>
