@@ -15,7 +15,7 @@ from pymongo import MongoClient
 
 import certifi
 
-client = MongoClient('mongodb://test:sparta@ac-arc7jbv-shard-00-00.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-01.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-02.lfxuxob.mongodb.net:27017/Cluster0?ssl=true&replicaSet=atlas-3juyq2-shard-0&authSource=admin&retryWrites=true&w=majority')
+client = MongoClient('mongodb://test:sparta@ac-arc7jbv-shard-00-00.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-01.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-02.lfxuxob.mongodb.net:27017/Cluster0?ssl=true&replicaSet=atlas-3juyq2-shard-0&authSource=admin&retryWrites=true&w=majority', tlsCAFile=certifi.where())
 db = client.dbsparta
 
 SECRET_KEY = 'SPARTA'
@@ -89,7 +89,7 @@ def check_dup():
     exists = bool(db.users.find_one({"username": username_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
-# 각 게시판으로 연결
+# 추천페이지
 @app.route('/recommend')
 def recommend():
     token_receive = request.cookies.get('mytoken')
@@ -100,11 +100,48 @@ def recommend():
         user_interest = user_info['category']
 
         recommend_list = []
-        for interest in user_info['category']:
+        for interest in user_interest:
             for recommend in db.favoritube.find({'cate': interest}, {'_id': False}):
                 recommend_list.append(recommend)
 
         return render_template('recommend.html', name=username, recommend_list=recommend_list, interest_list=user_interest)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
+# 추천목록에서 각 키워드로 항목추가
+@app.route("/recommend_add", methods=["POST"])
+def recommend_add():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({'username': payload['id']})
+        username = user_info['username']
+
+        url_receive = request.form['url_give']
+        cate_receive = request.form['cate_give']
+
+
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+        data = requests.get(url_receive, headers=headers)
+
+        soup = BeautifulSoup(data.text, 'html.parser')
+
+        image = soup.select_one('meta[property="og:image"]')['content']
+        title = soup.select_one('meta[property="og:title"]')['content']
+        comment = soup.select_one('meta[property="og:description"]')['content']
+
+        doc = {
+            'username' : username,
+            'url': url_receive,
+            'title': title,
+            'image': image,
+            'cate': cate_receive,
+            'comment': comment
+        }
+        db.mylist.insert_one(doc)
+
+        return jsonify({'msg': '추가 완료!'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
@@ -127,7 +164,7 @@ def mylist(keyword):
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
-
+#글 수정
 @app.route('/mylist_post' , methods=["POST"])
 def mylist_post():
     token_receive = request.cookies.get('mytoken')
@@ -138,10 +175,7 @@ def mylist_post():
         user_interest = user_info['category']
 
         url_receive = request.form['url_give']
-        title_receive = request.form['title_give']
         comment_receive = request.form['comment_give']
-        print(title_receive,comment_receive)
-        db.mylist.update_one({'url': url_receive}, {'$set': {'title': title_receive}})
         db.mylist.update_one({'url': url_receive}, {'$set': {'comment': comment_receive}})
 
 
@@ -149,6 +183,26 @@ def mylist_post():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
+#글 삭제
+@app.route('/mylist_delete' , methods=["POST"])
+def mylist_delete():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({'username': payload['id']})
+        username = user_info['username']
+        user_interest = user_info['category']
+
+        url_receive = request.form['url_give']
+        db.mylist.delete_one({'url': url_receive})
+
+
+        return jsonify({'msg': '삭제 완료!'})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
+
+#글 작성
 @app.route('/subscribe')
 def subscribe():
     token_receive = request.cookies.get('mytoken')
@@ -170,6 +224,7 @@ def subscribe_post():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({'username': payload['id']})
         username = user_info['username']
+
         title_receive = request.form['title_give']
         url_receive = request.form['url_give']
         cate_receive = request.form['cate_give']
@@ -196,6 +251,8 @@ def subscribe_post():
         return jsonify({'msg': '추가 완료!'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
+
+
 
 if __name__ == '__main__':
     app.jinja_env.add_extension('jinja2.ext.loopcontrols')
