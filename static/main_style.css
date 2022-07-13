@@ -80,6 +80,7 @@ a:focus {
 
 #sidebar .sidebar-header {
     padding: 20px;
+    font-size: 1.9em;
 }
 
 #sidebar .sidebar-header img {
@@ -90,6 +91,11 @@ a:focus {
 #sidebar ul.components {
     padding: 20px 0;
     margin-left: 10px
+}
+#sidebar ul a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
 }
 
 #sidebar ul p {
@@ -159,6 +165,9 @@ a.article:hover {
     min-height: 100vh;
     transition: all 0.3s;
 }
+#content >h3 {
+    padding:40px;
+}
 .order-info {
     padding: 20px;
     width: 500px;
@@ -177,10 +186,17 @@ a.article:hover {
     margin-top: 50px;
     width: 30%;
 }
+.btn-outline-danger{
+    margin-left:100px;
+    margin-top: 50px;
+}
 .btn-lg {
   position: fixed; /* 이 부분을 고정 */
   bottom: 50px; /* 하단에 여백 없이 */
   right: 50px;
+}
+.col{
+    max-width: 500px;
 }
 /* ---------------------------------------------------
     MEDIAQUERIES

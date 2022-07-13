@@ -7,8 +7,13 @@ from bs4 import BeautifulSoup
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 app = Flask(__name__)
 
+import requests
+from bs4 import BeautifulSoup
+
 from pymongo import MongoClient
-client = MongoClient('mongodb://test:sparta@ac-arc7jbv-shard-00-00.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-01.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-02.lfxuxob.mongodb.net:27017/Cluster0?ssl=true&replicaSet=atlas-3juyq2-shard-0&authSource=admin&retryWrites=true&w=majority')
+import certifi
+
+client = MongoClient('mongodb://test:sparta@ac-arc7jbv-shard-00-00.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-01.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-02.lfxuxob.mongodb.net:27017/Cluster0?ssl=true&replicaSet=atlas-3juyq2-shard-0&authSource=admin&retryWrites=true&w=majority', tlsCAFile=certifi.where())
 db = client.dbsparta
 
 SECRET_KEY = 'SPARTA'
@@ -19,7 +24,8 @@ def home():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
-        return render_template('main.html')
+        username = db.users.find_one({'username':payload['id']})['username']
+        return render_template('main.html',name=username)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -52,10 +58,13 @@ def sign_in():
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
+
+#회원가입 페이지로 연결
 @app.route('/membership')
 def register():
     return render_template('register.html')
 
+#회원가입 정보 DB로 POST
 @app.route('/membership/save', methods=['POST'])
 def sign_up():
     username_receive = request.form['username_give']
@@ -71,28 +80,45 @@ def sign_up():
     db.users.insert_one(doc)
     return jsonify({'result': 'success'})
 
+
+#DB에 중복되는 아이디가 있는지 확인
 @app.route('/membership/check_dup', methods=['POST'])
 def check_dup():
     username_receive = request.form['username_give']
     exists = bool(db.users.find_one({"username": username_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
-@app.route('/main')
-def main():
-    myname = 'C반3조'
-    return render_template('main.html', name=myname)
 
-@app.route('/recommend/<keyword>')
-def recommend(keyword):
-    myname = 'C반3조'
-    users = list(db.users.find({}, {'_id': False}))
-    return render_template('recommend.html', users= users , name = myname , word = keyword)
+#각 게시판으로 연결
+@app.route('/recommend')
+def recommend():
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    user_info = db.users.find_one({'username': payload['id']})
+    username = user_info['username']
+    user_interest = user_info['category']
+
+    recommend_list = []
+    for interest in user_info['category']:
+        for recommend in db.favoritube.find({'cate':interest}, {'_id':False}):
+            recommend_list.append(recommend)
+
+    return  render_template('recommend.html',name=username, recommend_list = recommend_list, interest_list= user_interest)
+
+
 
 @app.route('/subscribe')
 def subscribe():
-    myname = 'C반3조'
-    return render_template('subscribe.html', name = myname)
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    user_info = db.users.find_one({'username': payload['id']})
+    username = user_info['username']
+    user_interest = user_info['category']
 
+    return render_template('subscribe.html', name=username, interest_list=user_interest)
+
+
+#구독추가 정보를 DB로 POST
 @app.route("/subscribe", methods=["POST"])
 def subscribe_post():
     title_receive = request.form['title_give']
@@ -116,7 +142,7 @@ def subscribe_post():
         'cate': cate_receive,
         'comment': comment_receive
     }
-    db.users.insert_one(doc)
+    db.favoritube.insert_one(doc)
 
     return jsonify({'msg': '추가 완료!'})
 
