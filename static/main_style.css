@@ -196,7 +196,13 @@ a.article:hover {
   right: 50px;
 }
 .col{
-    max-width: 500px;
+    margin-top: 30px;
+    min-width: 30%;
+    max-width: 100%;
+}
+
+.card {
+    height: 100%;
 }
 /* ---------------------------------------------------
     MEDIAQUERIES
