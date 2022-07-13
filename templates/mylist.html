@@ -33,6 +33,12 @@
                 alert('로그아웃!')
                 window.location.href = "/login"
             }
+        function edit() {
+                window.location.href = "/subscribe"
+        }
+        function delete_post() {
+
+        }
     </script>
 </head>
 
@@ -101,6 +107,21 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ my.title }}</h5>
                                 <p class="card-text">{{ my.comment }}</p>
+
+                                <button href="#modifySubmenu{{my.title}}" data-toggle="collapse" aria-expanded="false" >수정하기</button>
+                                <li class="collapse list-unstyled" id="modifySubmenu{{my.title}}">
+                                    <div class="input-group ">
+                                        <span class="input-group-text">title</span>
+                                        <input id="title" type="text" class="form-control">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-text">채널설명</span>
+                                        <textarea id="comment" class="form-control"
+                                                  aria-label="With textarea"></textarea>
+                                    </div>
+                                    <button> 수정 완료 </button>
+                                </li>
+
                             </div>
                         </div>
                     </div>

@@ -112,7 +112,7 @@ a:focus {
 
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
-    color: #fff;
+    color: black
 }
 
 a[data-toggle="collapse"] {
