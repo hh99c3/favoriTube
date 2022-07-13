@@ -35,7 +35,6 @@ a:focus {
     border: none;
     border-radius: 0;
     margin-bottom: 40px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-btn {
@@ -99,9 +98,9 @@ a:focus {
 }
 
 #sidebar ul p {
-    color: #fff;
+    color: #d5202e;
     padding-bottom: 10px;
-    border-bottom: 2px solid white;
+    border-bottom: 2px solid #d5202e;
 }
 
 #sidebar ul li a {
@@ -164,9 +163,10 @@ a.article:hover {
     padding: 20px;
     min-height: 100vh;
     transition: all 0.3s;
+
 }
-#content >h3 {
-    padding:40px;
+#content >h2 {
+    text-align: center;
 }
 .order-info {
     padding: 20px;
@@ -187,8 +187,8 @@ a.article:hover {
     width: 30%;
 }
 .btn-outline-danger{
-    margin-left:100px;
-    margin-top: 50px;
+    margin: 50px auto;
+    width: 300px;
 }
 .btn-lg {
   position: fixed; /* 이 부분을 고정 */
@@ -196,7 +196,13 @@ a.article:hover {
   right: 50px;
 }
 .col{
-    max-width: 500px;
+    margin-top: 30px;
+    min-width: 30%;
+    max-width: 100%;
+}
+
+.card {
+    height: 100%;
 }
 /* ---------------------------------------------------
     MEDIAQUERIES
@@ -212,4 +218,19 @@ a.article:hover {
     #sidebarCollapse span {
         display: none;
     }
+}
+
+/* ---------------------------------------------------
+    welcome 화면 @main.html
+----------------------------------------------------- */
+.welcome {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    /*justify-content: center;*/
+    /*align-content: center;*/
+    margin: auto;
 }
