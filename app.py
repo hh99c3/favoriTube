@@ -12,10 +12,14 @@ from pymongo import MongoClient
 
 import certifi
 
-client = MongoClient('mongodb://test:sparta@ac-arc7jbv-shard-00-00.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-01.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-02.lfxuxob.mongodb.net:27017/Cluster0?ssl=true&replicaSet=atlas-3juyq2-shard-0&authSource=admin&retryWrites=true&w=majority', tlsCAFile=certifi.where())
+# client = MongoClient('mongodb://test:sparta@ac-arc7jbv-shard-00-00.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-01.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-02.lfxuxob.mongodb.net:27017/Cluster0?ssl=true&replicaSet=atlas-3juyq2-shard-0&authSource=admin&retryWrites=true&w=majority', tlsCAFile=certifi.where())
+# db = client.dbsparta
+
+client = MongoClient('mongodb+srv://test:kelly@DBprac0.jnprw.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=certifi.where())
 db = client.dbsparta
 
 SECRET_KEY = 'SPARTA'
+
 
 @app.route('/')
 def home():
@@ -23,8 +27,10 @@ def home():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
-        username = db.users.find_one({'username':payload['id']})['username']
-        return render_template('main.html',name=username)
+        user_info = db.users.find_one({'username':payload['id']})
+        username = user_info['username']
+        user_interest = user_info['category']
+        return render_template('main.html',name=username, interest_list=user_interest)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:

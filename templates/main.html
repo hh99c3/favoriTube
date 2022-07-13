@@ -37,7 +37,7 @@
     <nav id="sidebar">
         <div class="sidebar-header">
             <img src="/static/logo.png" width="40px" heigh="30px">
-            <a href = '/main'>FAVORITUBE</a>
+            <a href ='/'>FAVORITUBE</a>
         </div>
 
          <ul class="list-unstyled components">
@@ -47,14 +47,14 @@
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">나의 리스트</a>
                 <ul class="collapse list-unstyled" id="pageSubmenu">
                     <li>
-                        <a href="/recommend/먹방">나의 리스트</a>
+                        <a href="/recommend/나의리스트">나의 리스트</a>
                     </li>
+                {% for interest in interest_list %}
                     <li>
-                        <a href="/recommend/스포츠">스포츠</a>
+                        <a href="/recommend/{{ interest }}">{{ interest }}</a>
                     </li>
-                    <li>
-                        <a href="/recommend/주식">주식</a>
-                    </li>
+                {% endfor %}
+                </ul>
                 </ul>
             </li>
             </li>
