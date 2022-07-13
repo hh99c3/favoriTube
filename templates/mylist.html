@@ -34,15 +34,15 @@
                 window.location.href = "/login"
         }
 
-        function edit(before_title) {
-            let beforeTitle = before_title
+        function edit(myurl) {
+            let url = myurl
             let title = $('#title').val()
             let comment = $('#comment').val()
-            console.log(beforeTitle)
+            console.log(url)
             $.ajax({
                 type: 'POST',
                 url: '/mylist_post',
-                data: {title_give: title, comment_give: comment, beforeTitle_give: beforeTitle},
+                data: {title_give: title, comment_give: comment, url_give: url},
                 success: function (response) {
                     alert(response['msg'])
                     window.location.reload()
@@ -133,7 +133,7 @@
                                         <textarea id="comment" class="form-control"
                                                   aria-label="With textarea"></textarea>
                                     </div>
-                                    <button onclick="edit('{{my.title}}')"> 수정 완료 </button>
+                                    <button onclick="edit('{{my.url}}')"> 수정 완료 </button>
                                 </li>
 
                             </div>
