@@ -128,7 +128,7 @@ def mylist(keyword):
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
-
+#글 수정
 @app.route('/mylist_post' , methods=["POST"])
 def mylist_post():
     token_receive = request.cookies.get('mytoken')
@@ -143,6 +143,7 @@ def mylist_post():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
+#글 작성
 @app.route('/subscribe')
 def subscribe():
     token_receive = request.cookies.get('mytoken')
@@ -186,6 +187,8 @@ def subscribe_post():
         return jsonify({'msg': '추가 완료!'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
+
+
 
 if __name__ == '__main__':
     app.jinja_env.add_extension('jinja2.ext.loopcontrols')
