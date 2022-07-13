@@ -39,8 +39,8 @@
             let my_title = mytitle
             let my_comment = mycomment
             console.log(url,mytitle,mycomment)
-            let title = $('#' + my_title).val()
-            let comment = $('#' + my_comment).val()
+            let title = $("#" + my_title).val()
+            let comment = $("#" + my_comment).val()
             $.ajax({
                 type: 'POST',
                 url: '/mylist_post',
