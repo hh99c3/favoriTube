@@ -2,12 +2,14 @@ import hashlib
 from datetime import timedelta
 
 import jwt
+import requests
+from bs4 import BeautifulSoup
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 app = Flask(__name__)
 
 from pymongo import MongoClient
-client = MongoClient('mongodb+srv://test:sparta@cluster0.ydgg3.mongodb.net/Cluster0?retryWrites=true&w=majority')
-db = client.hanghae
+client = MongoClient('mongodb://test:sparta@ac-arc7jbv-shard-00-00.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-01.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-02.lfxuxob.mongodb.net:27017/Cluster0?ssl=true&replicaSet=atlas-3juyq2-shard-0&authSource=admin&retryWrites=true&w=majority')
+db = client.dbsparta
 
 SECRET_KEY = 'SPARTA'
 
@@ -17,7 +19,7 @@ def home():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
-        return render_template('recommend.html')
+        return render_template('main.html')
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -58,7 +60,7 @@ def register():
 def sign_up():
     username_receive = request.form['username_give']
     password_receive = request.form['password_give']
-    category_receive = request.form['category_give']
+    category_receive = request.form.getlist('category_give')
 
     password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
     doc = {
