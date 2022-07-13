@@ -28,19 +28,15 @@
             integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
             crossorigin="anonymous"></script>
     <script>
-        function posting() {
-            let title = $('#title').val()
-            let url = $('#url').val()
-            let cate = $('#cate').val()
-            let comment = $('#comment').val()
+        function posting(rmd_url, rmd_cate) {
 
             $.ajax({
                 type: 'POST',
-                url: '/subscribe',
-                data: {title_give: title, url_give: url, cate_give: cate, comment_give: comment},
+                url: '/recommend_add',
+                data: {url_give: rmd_url, cate_give: rmd_cate},
                 success: function (response) {
                     alert(response['msg'])
-                    window.location.href = "/"
+                    window.location.href = "/mylist/" + rmd_cate
                 }
             });
         }
@@ -116,13 +112,13 @@
                     {% if rmd.cate == interest %}
                     <div class="col">
                         <div class="card">
-                            <a id="" href="{{ rmd.url }}"><img src="{{ rmd.image }}" class="card-img-top" alt="Card image cap">
+                            <a href="{{ rmd.url }}"><img src="{{ rmd.image }}" class="card-img-top" alt="Card image cap">
                             </a>
                             <div class="card-body">
                                 <h5 class="card-title" id="{{ rmd.title }}">{{ rmd.title }}</h5>
                                 <p class="card-text" id="{{ rmd.comment }}">{{ rmd.comment }}</p>
                             </div>
-                            <button onclick="posting()">나의 리스트 - '{{ rmd.cate }}'에 추가</button>
+                            <button onclick="posting('{{rmd.url}}', '{{ rmd.cate }}')">나의 리스트 - '{{ rmd.cate }}'에 추가</button>
                         </div>
                     </div>
                     {% else %}

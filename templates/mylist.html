@@ -39,8 +39,9 @@
             let my_title = mytitle
             let my_comment = mycomment
             console.log(url,mytitle,mycomment)
-            let title = $("#" + my_title).val()
-            let comment = $("#" + my_comment).val()
+            let title = $("." + my_title).val()
+            let comment = $("." + my_comment).val()
+            console.log(title, comment)
             $.ajax({
                 type: 'POST',
                 url: '/mylist_post',
@@ -120,30 +121,30 @@
             <div class="col">
                 <div class="card">
                     <a href="{{ my.url }}"><img src="{{ my.image }}" class="card-img-top" alt="Card image cap"> </a>
-                            <div class="card-body">
-                                <h5 class="card-title">{{ my.title }}</h5>
-                                <p class="card-text">{{ my.comment }}</p>
-                                <button href="#modifySubmenu{{my.title}}" data-toggle="collapse" aria-expanded="false">
-                                    수정하기
-                                </button>
-                                <li class="collapse list-unstyled" id="modifySubmenu{{my.title}}">
-                                    <div class="input-group ">
-                                        <span class="input-group-text">title</span>
-                                        <input id="{{my.title}}" type="text" class="form-control">
-                                    </div>
-                                    <div class="input-group">
-                                        <span class="input-group-text">채널설명</span>
-                                        <textarea id="{{my.comment}}" class="form-control"
-                                                  aria-label="With textarea"></textarea>
-                                    </div>
-                                    <button onclick="edit('{{my.url}}','{{my.title}}','{{my.comment}}')"> 수정 완료</button>
-                                </li>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ my.title }}</h5>
+                        <p class="card-text">{{ my.comment }}</p>
+                        <button href="#modifySubmenu{{my.title}}" data-toggle="collapse" aria-expanded="false">
+                            수정하기
+                        </button>
+                        <li class="collapse list-unstyled" id="modifySubmenu{{my.title}}">
+                            <div class="input-group ">
+                                <span class="input-group-text">title</span>
+                                <input id="{{my.title}}" type="text" class="form-control">
                             </div>
-                        </div>
+                            <div class="input-group">
+                                <span class="input-group-text">채널설명</span>
+                                <textarea id="{{my.comment}}" class="form-control"
+                                          aria-label="With textarea"></textarea>
+                            </div>
+                            <button onclick="edit('{{my.url}}','{{my.title}}','{{my.comment}}')"> 수정 완료</button>
+                        </li>
                     </div>
+                </div>
             </div>
-        {% endif %}
-        {% endfor %}
+            {% endif %}
+            {% endfor %}
+        </div>
     </div>
     <button type="button" onclick="window.location.href = '/subscribe'"
             class="btn btn-secondary btn-lg float-right ">+ 추가하기
