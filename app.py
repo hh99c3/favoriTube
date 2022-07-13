@@ -175,16 +175,32 @@ def mylist_post():
         user_interest = user_info['category']
 
         url_receive = request.form['url_give']
-        title_receive = request.form['title_give']
         comment_receive = request.form['comment_give']
-
-        db.mylist.update_one({'url': url_receive}, {'$set': {'title': title_receive}})
         db.mylist.update_one({'url': url_receive}, {'$set': {'comment': comment_receive}})
 
 
         return jsonify({'msg': '수정 완료!'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
+
+#글 삭제
+@app.route('/mylist_delete' , methods=["POST"])
+def mylist_delete():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({'username': payload['id']})
+        username = user_info['username']
+        user_interest = user_info['category']
+
+        url_receive = request.form['url_give']
+        db.mylist.delete_one({'url': url_receive})
+
+
+        return jsonify({'msg': '삭제 완료!'})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
 
 #글 작성
 @app.route('/subscribe')
