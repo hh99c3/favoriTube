@@ -119,29 +119,31 @@
         <h2>{{ name }}님의 [{{ word }}] 리스트</h2>
         <div class="card-deck" id="sub-box">
             {% for my in mylist %}
-            {% if (word == my.cate) and (name == my.username) %}
-            <div class="col">
-                <div class="card">
-                    <a href="{{ my.url }}" target="_blank"><img src="{{ my.image }}" class="card-img-top" alt="Card image cap"> </a>
-                    <div class="card-body">
-                        <h5 class="card-title">{{ my.title }}</h5>
-                        <p class="card-text">{{ my.comment }}</p>
-                        <button href="#modifySubmenu{{my.title}}" data-toggle="collapse" aria-expanded="false">
-                            수정하기
-                        </button>
-                        <button onclick="delete_post('{{my.url}}')"> 삭제 </button>
-                        <li class="collapse list-unstyled" id="modifySubmenu{{my.title}}">
-                            <div class="input-group">
-                                <span class="input-group-text">채널설명</span>
-                                <textarea id="{{my.title}}" class="form-control"
-                                          aria-label="With textarea"></textarea>
-                            </div>
-                            <button onclick="edit('{{my.url}}','{{my.title}}','{{my.comment}}' )"> 수정 완료</button>
-                        </li>
+                {% if (word == my.cate) and (name == my.username) %}
+                <div class="col">
+                    <div class="card">
+                        <a href="{{ my.url }}" target="_blank"><img src="{{ my.image }}" class="card-img-top" alt="Card image cap"> </a>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ my.title }}</h5>
+                            <p class="card-text">{{ my.comment }}</p>
+                            <button href="#modifySubmenu{{my.title}}" data-toggle="collapse" aria-expanded="false">
+                                수정하기
+                            </button>
+                            <button onclick="delete_post('{{my.url}}')"> 삭제 </button>
+                            <li class="collapse list-unstyled" id="modifySubmenu{{my.title}}">
+                                <div class="input-group">
+                                    <span class="input-group-text">채널설명</span>
+                                    <textarea id="{{my.title}}" class="form-control"
+                                              aria-label="With textarea"></textarea>
+                                </div>
+                                <button onclick="edit('{{my.url}}','{{my.title}}','{{my.comment}}' )"> 수정 완료</button>
+                            </li>
+                        </div>
                     </div>
                 </div>
-            </div>
-            {% endif %}
+                {% else %}
+                    {% continue %}
+                {% endif %}
             {% endfor %}
         </div>
     </div>

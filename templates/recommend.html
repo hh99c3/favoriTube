@@ -106,7 +106,7 @@
             {% for interest in interest_list %} <br><br><h3 class="card-category"><{{ interest }}></h3>
             <div class="card-deck" id="sub-box">
                 {% for rmd in recommend_list %}
-                    {% if rmd.cate == interest %}
+                    {% if (rmd.cate == interest) and (rmd.cate != '기타') %}
                     <div class="col">
                         <div class="card">
                             <a href="{{ rmd.url }}" target="_blank"><img src="{{ rmd.image }}" class="card-img-top" alt="Card image cap">
