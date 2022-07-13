@@ -103,25 +103,30 @@
 
         <h2>{{ name }}님의 FAVORITE</h2>
         <div class="card-category">
-            {% for interest in interest_list %} <br><br><h3 class="card-category"><{{ interest }}></h3>
-            <div class="card-deck" id="sub-box">
-                {% for rmd in recommend_list %}
-                    {% if (rmd.cate == interest) and (rmd.cate != '기타') %}
-                    <div class="col">
-                        <div class="card">
-                            <a href="{{ rmd.url }}" target="_blank"><img src="{{ rmd.image }}" class="card-img-top" alt="Card image cap">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title" id="{{ rmd.title }}">{{ rmd.title }}</h5>
-                                <p class="card-text" id="{{ rmd.comment }}">{{ rmd.comment }}</p>
+            {% for interest in interest_list %} <br><br>
+                {% if interest != '기타' %}
+                    <h3 class="card-category"><{{ interest }}></h3>
+                {% else %}
+                    {% continue %}}
+                {% endif %}
+                <div class="card-deck" id="sub-box">
+                    {% for rmd in recommend_list %}
+                        {% if rmd.cate == interest %}
+                        <div class="col">
+                            <div class="card">
+                                <a href="{{ rmd.url }}" target="_blank"><img src="{{ rmd.image }}" class="card-img-top" alt="Card image cap">
+                                </a>
+                                <div class="card-body">
+                                    <h5 class="card-title" id="{{ rmd.title }}">{{ rmd.title }}</h5>
+                                    <p class="card-text" id="{{ rmd.comment }}">{{ rmd.comment }}</p>
+                                </div>
+                                <button onclick="posting('{{rmd.url}}', '{{ rmd.cate }}')">나의 리스트 - '{{ rmd.cate }}'에 추가</button>
                             </div>
-                            <button onclick="posting('{{rmd.url}}', '{{ rmd.cate }}')">나의 리스트 - '{{ rmd.cate }}'에 추가</button>
                         </div>
-                    </div>
-                    {% else %}
-                        {% continue %}
-                    {% endif %}
-                {% endfor %}
+                        {% else %}
+                            {% continue %}
+                        {% endif %}
+                    {% endfor %}
             </div>
             {% endfor %}
         </div>
