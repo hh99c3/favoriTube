@@ -47,18 +47,18 @@
 
         <ul class="list-unstyled components">
             <p>카테고리</p>
-              <a href="/recommend">추천리스트</a>
+            <a href="/recommend">추천리스트</a>
             <li>
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">나의 리스트</a>
                 <ul class="collapse list-unstyled" id="pageSubmenu">
+                    {% for interest in interest_list %}
                     <li>
-                        <a href="/recommend/나의리스트">나의 리스트</a>
+                        <a href="/mylist/{{interest}}">{{ interest }}</a>
                     </li>
-                {% for interest in interest_list %}
+                    {% endfor %}
                     <li>
-                        <a href="/recommend/{{ interest }}">{{ interest }}</a>
+                        <a href="/mylist/기타">기타</a>
                     </li>
-                {% endfor %}
                 </ul>
             </li>
         </ul>
