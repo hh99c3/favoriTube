@@ -34,17 +34,14 @@
             window.location.href = "/login"
         }
 
-        function edit(myurl,mytitle,mycomment) {
+        function edit(myurl,mycomment) {
             let url = myurl
-            let my_title = mytitle
             let my_comment = mycomment
-            console.log(url,mytitle,mycomment)
-            let title = $("#" + my_title).val()
             let comment = $("#" + my_comment).val()
             $.ajax({
                 type: 'POST',
                 url: '/mylist_post',
-                data: {title_give: title, comment_give: comment, url_give: url},
+                data: { comment_give: comment, url_give: url},
                 success: function (response) {
                     alert(response['msg'])
                     window.location.reload()
@@ -124,19 +121,15 @@
                                 <h5 class="card-title">{{ my.title }}</h5>
                                 <p class="card-text">{{ my.comment }}</p>
                                 <button href="#modifySubmenu{{my.title}}" data-toggle="collapse" aria-expanded="false">
-                                    수정하기
+                                   내용 수정하기
                                 </button>
                                 <li class="collapse list-unstyled" id="modifySubmenu{{my.title}}">
-                                    <div class="input-group ">
-                                        <span class="input-group-text">title</span>
-                                        <input id="{{my.title}}" type="text" class="form-control">
-                                    </div>
                                     <div class="input-group">
                                         <span class="input-group-text">채널설명</span>
                                         <textarea id="{{my.comment}}" class="form-control"
                                                   aria-label="With textarea"></textarea>
                                     </div>
-                                    <button onclick="edit('{{my.url}}','{{my.title}}','{{my.comment}}')"> 수정 완료</button>
+                                    <button onclick="edit('{{my.url}}','{{my.comment}}')"> 수정 완료</button>
                                 </li>
                             </div>
                         </div>
