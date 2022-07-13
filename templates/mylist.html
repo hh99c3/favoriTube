@@ -34,11 +34,13 @@
                 window.location.href = "/login"
         }
 
-        function edit(myurl) {
+        function edit(myurl,mytitle,mycomment) {
             let url = myurl
-            let title = $('#title').val()
-            let comment = $('#comment').val()
-            console.log(url)
+            let my_title = mytitle
+            let my_comment = mycomment
+            console.log(url,mytitle,mycomment)
+            let title = $('#' + my_title).val()
+            let comment = $('#' + my_comment).val()
             $.ajax({
                 type: 'POST',
                 url: '/mylist_post',
@@ -126,14 +128,14 @@
                                 <li class="collapse list-unstyled" id="modifySubmenu{{my.title}}">
                                     <div class="input-group ">
                                         <span class="input-group-text">title</span>
-                                        <input id="title" type="text" class="form-control">
+                                        <input id="{{my.title}}" type="text" class="form-control">
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-text">채널설명</span>
-                                        <textarea id="comment" class="form-control"
+                                        <textarea id="{{my.comment}}" class="form-control"
                                                   aria-label="With textarea"></textarea>
                                     </div>
-                                    <button onclick="edit('{{my.url}}')"> 수정 완료 </button>
+                                    <button onclick="edit('{{my.url}}','{{my.title}}','{{my.comment}}')"> 수정 완료 </button>
                                 </li>
 
                             </div>
