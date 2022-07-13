@@ -15,12 +15,9 @@ from pymongo import MongoClient
 
 import certifi
 
-# client = MongoClient('mongodb://test:sparta@ac-arc7jbv-shard-00-00.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-01.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-02.lfxuxob.mongodb.net:27017/Cluster0?ssl=true&replicaSet=atlas-3juyq2-shard-0&authSource=admin&retryWrites=true&w=majority', tlsCAFile=certifi.where())
-# db = client.dbsparta
-
-client = MongoClient('mongodb+srv://test:kelly@DBprac0.jnprw.mongodb.net/?retryWrites=true&w=majority',
-                     tlsCAFile=certifi.where())
+client = MongoClient('mongodb://test:sparta@ac-arc7jbv-shard-00-00.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-01.lfxuxob.mongodb.net:27017,ac-arc7jbv-shard-00-02.lfxuxob.mongodb.net:27017/Cluster0?ssl=true&replicaSet=atlas-3juyq2-shard-0&authSource=admin&retryWrites=true&w=majority', tlsCAFile=certifi.where())
 db = client.dbsparta
+
 
 SECRET_KEY = 'SPARTA'
 
@@ -112,6 +109,25 @@ def recommend():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
+@app.route('/mylist/<keyword>')
+def mylist(keyword):
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({'username': payload['id']})
+        username = user_info['username']
+        user_interest = user_info['category']
+
+        mylist = []
+        for interest in user_info['category']:
+            for my in db.mylist.find({'cate': interest}, {'_id': False}):
+                mylist.append(my)
+
+        return render_template('mylist.html', name=username, mylist=mylist,
+                               interest_list=user_interest, word = keyword )
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
 
 @app.route('/subscribe')
 def subscribe():
@@ -151,7 +167,7 @@ def subscribe_post():
             'cate': cate_receive,
             'comment': comment_receive
         }
-        db.favoritube.insert_one(doc)
+        db.mylist.insert_one(doc)
 
         return jsonify({'msg': '추가 완료!'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):

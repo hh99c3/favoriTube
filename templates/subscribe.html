@@ -55,7 +55,7 @@
                 data: {title_give: title, url_give: url, cate_give: cate, comment_give: comment},
                 success: function (response) {
                     alert(response['msg'])
-                    window.location.href = "/main"
+                    window.location.href = "/"
                 }
             });
         }
@@ -84,14 +84,14 @@
                     <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">나의
                         리스트</a>
                     <ul class="collapse list-unstyled" id="pageSubmenu">
-                        <li>
-                            <a href="/recommend/나의리스트">나의 리스트</a>
-                        </li>
                         {% for interest in interest_list %}
                         <li>
-                            <a href="/recommend/{{ interest }}">{{ interest }}</a>
+                            <a href="/mylist/{{interest}}">{{ interest }}</a>
                         </li>
                         {% endfor %}
+                        <li>
+                            <a href="/mylist/기타">기타</a>
+                        </li>
                     </ul>
                 </li>
             </ul>
@@ -138,10 +138,10 @@
                     <label class="input-group-text" for="size">카테고리</label>
                     <select class="form-select" id="cate">
                         <option selected>-- 선택 --</option>
-                        <option value="나의리스트">나의 리스트</option>
                         {% for interest in interest_list %}
                         <option value={{ interest }}>{{ interest }}</option>
                         {% endfor %}
+                        <option value="기타">기타</option>
                     </select>
                 </div>
                 <div class="input-group">
