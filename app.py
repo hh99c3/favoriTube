@@ -129,15 +129,14 @@ def recommend_add():
 
         image = soup.select_one('meta[property="og:image"]')['content']
         title = soup.select_one('meta[property="og:title"]')['content']
-        comment = soup.select_one('meta[property="og:description"]')['content']
 
         doc = {
             'username' : username,
             'url': url_receive,
-            'title': title,
+            'title': cate_receive,
             'image': image,
             'cate': cate_receive,
-            'comment': comment
+            'comment': cate_receive + '내용을 변경하세요!'
         }
         db.mylist.insert_one(doc)
 
