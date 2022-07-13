@@ -37,7 +37,14 @@
         function edit(myurl,mycomment) {
             let url = myurl
             let my_comment = mycomment
+<<<<<<< HEAD
             let comment = $("#" + my_comment).val()
+=======
+            console.log(url,mytitle,mycomment)
+            let title = $("." + my_title).val()
+            let comment = $("." + my_comment).val()
+            console.log(title, comment)
+>>>>>>> 8dbfcc27e1b202dd5eb3619d9f7b43c263f64201
             $.ajax({
                 type: 'POST',
                 url: '/mylist_post',
@@ -117,29 +124,30 @@
             <div class="col">
                 <div class="card">
                     <a href="{{ my.url }}"><img src="{{ my.image }}" class="card-img-top" alt="Card image cap"> </a>
-                            <div class="card-body">
-                                <h5 class="card-title">{{ my.title }}</h5>
-                                <p class="card-text">{{ my.comment }}</p>
-                                <button href="#modifySubmenu{{my.title}}" data-toggle="collapse" aria-expanded="false">
-                                   내용 수정하기
-                                </button>
-                                <li class="collapse list-unstyled" id="modifySubmenu{{my.title}}">
-                                    <div class="input-group">
-                                        <span class="input-group-text">채널설명</span>
-                                        <textarea id="{{my.comment}}" class="form-control"
-                                                  aria-label="With textarea"></textarea>
-                                    </div>
-                                    <button onclick="edit('{{my.url}}','{{my.comment}}')"> 수정 완료</button>
-                                </li>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ my.title }}</h5>
+                        <p class="card-text">{{ my.comment }}</p>
+                        <button href="#modifySubmenu{{my.title}}" data-toggle="collapse" aria-expanded="false">
+                            내용 수정하기
+                        </button>
+                        <li class="collapse list-unstyled" id="modifySubmenu{{my.title}}">
+                            <div class="input-group">
+                                <span class="input-group-text">채널설명</span>
+                                <textarea id="{{my.comment}}" class="form-control"
+                                          aria-label="With textarea"></textarea>
                             </div>
-                        </div>
+                            <button onclick="edit('{{my.url}}','{{my.comment}}')"> 수정 완료</button>
+                        </li>
                     </div>
+                </div>
             </div>
+        </div>
         {% endif %}
         {% endfor %}
     </div>
-    <button type="button" onclick="window.location.href = '/subscribe'"
-            class="btn btn-secondary btn-lg float-right ">+ 추가하기
+</div>
+<button type="button" onclick="window.location.href = '/subscribe'"
+        class="btn btn-secondary btn-lg float-right ">+ 추가하기
     </button>
 
 </div>

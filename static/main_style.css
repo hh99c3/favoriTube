@@ -198,7 +198,7 @@ a.article:hover {
 .col{
     margin-top: 30px;
     min-width: 30%;
-    max-width: 100%;
+    max-width: 50%;
 }
 
 .card {
