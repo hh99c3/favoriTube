@@ -84,9 +84,6 @@
                         <a href="/mylist/{{interest}}">{{ interest }}</a>
                     </li>
                     {% endfor %}
-                    <li>
-                        <a href="/mylist/기타">기타</a>
-                    </li>
                 </ul>
             </li>
         </ul>
@@ -139,7 +136,7 @@
                                 <textarea id="{{my.title}}" class="form-control"
                                           aria-label="With textarea"></textarea>
                             </div>
-                            <button onclick="edit('{{my.url}}','{{my.title}}', '{{my.comment}}' )"> 수정 완료</button>
+                            <button onclick="edit('{{my.url}}','{{my.title}}','{{my.comment}}' )"> 수정 완료</button>
                         </li>
                     </div>
                 </div>
