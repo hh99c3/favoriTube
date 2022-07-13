@@ -128,15 +128,15 @@
             <div class="order-info">
                 <div class="input-group mb-3">
                     <span class="input-group-text">title</span>
-                    <input name="title" type="text" class="form-control">
+                    <input id="title" type="text" class="form-control">
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text">유튜브 URL</span>
-                    <input name="url" type="text" class="form-control">
+                    <input id="url" type="text" class="form-control">
                 </div>
                 <div class="input-group mb-3">
                     <label class="input-group-text" for="size">카테고리</label>
-                    <select class="form-select" name="cate">
+                    <select class="form-select" id="cate">
                         <option selected>-- 선택 --</option>
                         {% for interest in interest_list %}
                         <option value={{ interest }}>{{ interest }}</option>
@@ -146,7 +146,7 @@
                 </div>
                 <div class="input-group">
                     <span class="input-group-text">채널설명</span>
-                    <textarea name="comment" class="form-control" aria-label="With textarea"></textarea>
+                    <textarea id="comment" class="form-control" aria-label="With textarea"></textarea>
                 </div>
                 <button onclick="posting()" type="button" class="btn btn-warning mybtn">추가하기</button>
             </div>
