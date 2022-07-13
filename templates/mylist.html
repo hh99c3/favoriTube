@@ -37,7 +37,11 @@
         function edit(myurl,mycomment) {
             let url = myurl
             let my_comment = mycomment
+
+            console.log(url,mytitle,mycomment)
+            let title = $("#" + my_title).val()
             let comment = $("#" + my_comment).val()
+            console.log(title, comment)
             $.ajax({
                 type: 'POST',
                 url: '/mylist_post',
@@ -125,7 +129,7 @@
             {% if (word == my.cate) and (name == my.username) %}
             <div class="col">
                 <div class="card">
-                    <a href="{{ my.url }}"><img src="{{ my.image }}" class="card-img-top" alt="Card image cap"> </a>
+                    <a href="{{ my.url }}" target="_blank"><img src="{{ my.image }}" class="card-img-top" alt="Card image cap"> </a>
                     <div class="card-body">
                         <h5 class="card-title">{{ my.title }}</h5>
                         <p class="card-text">{{ my.comment }}</p>

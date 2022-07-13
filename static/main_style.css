@@ -17,7 +17,6 @@ p {
     margin-left: 10px;
 }
 .add{
-    padding-top: 30px;
     padding-bottom: 20px;
     text-align: center;
 }
@@ -174,16 +173,19 @@ a.article:hover {
     margin: auto;
     border-radius: 10px;
     border: 2px solid black;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 .input-group{
-    margin-top: 30px;
+    margin-top: 10px;
 }
 .form-select {
     width: 82.5%;
 }
 .mybtn {
-    margin-left:180px;
-    margin-top: 50px;
+    margin: 30px auto 0;
     width: 30%;
 }
 .btn-outline-danger{
