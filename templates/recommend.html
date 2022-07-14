@@ -86,7 +86,7 @@
                 <span class="user">{{ name }} 님</span>
             </li>
             <li>
-                <button onclick="sign_out()">로그아웃</button>
+                 <button class="btn btn-warning"onclick="sign_out()">로그아웃</button>
             </li>
         </ul>
     </nav>
@@ -109,7 +109,7 @@
             </div>
         </nav>
 
-        <h2>{{ name }}님의 FAVORITE</h2>
+        <h2 class="rec">{{ name }}님의 FAVORITE</h2>
         <div class="card-category">
             {% for interest in interest_list %} <br><br>
                 {% if interest != '기타' %}
