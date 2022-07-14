@@ -54,8 +54,12 @@
                 url: '/subscribe',
                 data: {title_give: title, url_give: url, cate_give: cate, comment_give: comment},
                 success: function (response) {
-                    alert(response['msg'])
-                    window.location.href = "/"
+                    if (response['result'] == 'success') {
+                        alert(response['msg'])
+                        window.location.href = "/mylist/" + cate
+                    } else {
+                        alert(response['msg'])
+                    }
                 }
             });
         }
@@ -89,6 +93,9 @@
                             <a href="/mylist/{{interest}}">{{ interest }}</a>
                         </li>
                         {% endfor %}
+                        <li>
+                            <a href="/mylist/기타">기타</a>
+                        </li>
                     </ul>
                 </li>
             </ul>
@@ -133,11 +140,12 @@
                 </div>
                 <div class="input-group mb-3">
                     <label class="input-group-text" for="size">카테고리</label>
-                    <select class="form-select" id="cate">
+                    <select class="form-select" id="cate" required>
                         <option selected>-- 선택 --</option>
                         {% for interest in interest_list %}
                         <option value={{ interest }}>{{ interest }}</option>
                         {% endfor %}
+                        <option value="기타" selected>기타</option>
                     </select>
                 </div>
                 <div class="input-group">
@@ -149,5 +157,4 @@
         </div>
     </div>
 </body>
-
 </html>
