@@ -191,21 +191,34 @@ a.article:hover {
 .btn-outline-danger{
     margin: 50px auto;
     width: 300px;
+    padding: 20px;
 }
+
 .btn-lg {
-  position: fixed; /* 이 부분을 고정 */
-  bottom: 50px; /* 하단에 여백 없이 */
-  right: 50px;
+    position: fixed; /* 이 부분을 고정 */
+    bottom: 50px; /* 하단에 여백 없이 */
+    right: 50px;
 }
-.col{
-    margin-top: 30px;
-    min-width: 30%;
-    max-width: 50%;
+
+.col {
+    margin: 30px auto;
+    max-width: 30%;
 }
 
 .card {
     height: 100%;
+    border-radius: 30px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
+.card > button {
+    margin: 0px auto 20px;
+
+}
+.badge{
+    padding:12px 15px;
+    font-family: 'Jua', sans-serif;
+}
+
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
