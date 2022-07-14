@@ -132,10 +132,12 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ my.title }}</h5>
                             <p class="card-text">{{ my.comment }}</p>
-                            <button type="button" data-toggle="collapse" data-target="#collapseExample{{loop.index}}" aria-expanded="false"
-                                    aria-controls="collapseExample"><i class="fa-regular fa-pen-to-square"></i></button>
-                            <button onclick="delete_post('{{my.url}}')">
-                                <i class="fa-regular fa-trash-can"></i></button>
+                            <div class="edit_btn">
+                                <button type="button" data-toggle="collapse" data-target="#collapseExample{{loop.index}}" aria-expanded="false"
+                                        aria-controls="collapseExample"><i class="fa-regular fa-pen-to-square"></i></button>
+                                <button onclick="delete_post('{{my.url}}')">
+                                    <i class="fa-regular fa-trash-can"></i></button>
+                            </div>
                             <div class="collapse" id="collapseExample{{loop.index}}">
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">title</span>
@@ -145,10 +147,10 @@
                                     <span class="input-group-text">채널설명</span>
                                     <textarea id="comment{{my.cate}}{{loop.index}}" class="form-control" aria-label="With textarea"></textarea>
                                 </div>
-                                <button class="modify btn btn-dark btn-sm" onclick="edit('{{my.url}}','{{my.cate}}','{{loop.index}}')"> 수정 완료</button>
+                                <div class="modify">
+                                    <button class="btn btn-dark btn-sm" onclick="edit('{{my.url}}','{{my.cate}}','{{loop.index}}')">수정하기</button>
+                                </div>
                             </div>
-
-
                         </div>
                     </div>
                 </div>
