@@ -27,6 +27,8 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
             integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
             crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/7fa4e7d7ae.js" crossorigin="anonymous"></script>
+
     <script>
         function sign_out() {
             $.removeCookie('mytoken', {path: '/'});
@@ -131,8 +133,9 @@
                             <h5 class="card-title">{{ my.title }}</h5>
                             <p class="card-text">{{ my.comment }}</p>
                             <button type="button" data-toggle="collapse" data-target="#collapseExample{{loop.index}}" aria-expanded="false"
-                                    aria-controls="collapseExample">수정하기</button>
-                            <button onclick="delete_post('{{my.url}}')">삭제</button>
+                                    aria-controls="collapseExample"><i class="fa-regular fa-pen-to-square"></i></button>
+                            <button onclick="delete_post('{{my.url}}')">
+                                <i class="fa-regular fa-trash-can"></i></button>
                             <div class="collapse" id="collapseExample{{loop.index}}">
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">title</span>
@@ -156,7 +159,7 @@
         </div>
     </div>
     <button type="button" onclick="window.location.href = '/subscribe'"
-            class="btn btn-secondary btn-lg float-right ">+ 추가하기
+            class="btn btn-secondary btn-lg float-right "> + 추가하기
     </button>
 </div>
 

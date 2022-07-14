@@ -157,11 +157,19 @@ def mylist(keyword):
 
         mylist = []
         if (db.mylist.find({'cate':'기타'}, {'_id':False}) is not None):
+<<<<<<< HEAD
             for etc in db.mylist.find({'username': username, 'cate':'기타'}, {'_id':False}):
                 mylist.append(etc)
 
         for interest in user_info['category']:
             for my in db.mylist.find({'username': username, 'cate': interest}, {'_id': False}):
+=======
+            for etc in db.mylist.find({'username':username,'cate':'기타'}, {'_id':False}):
+                mylist.append(etc)
+
+        for interest in user_info['category']:
+            for my in db.mylist.find({'username':username,'cate': interest}, {'_id': False}):
+>>>>>>> 33e6a97da10c944388791861ed17f1a55c845fb0
                 mylist.append(my)
 
         return render_template('mylist.html', name=username, mylist=mylist,
