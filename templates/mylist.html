@@ -43,7 +43,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '/mylist_post',
+                url: '/mylist',
                 data: { comment_give: comment, url_give: url, title_give:title},
                 success: function (response) {
                     alert(response['msg'])
@@ -55,8 +55,8 @@
         function delete_post(myurl) {
             let url = myurl
             $.ajax({
-                type: 'POST',
-                url: '/mylist_delete',
+                type: 'DELETE',
+                url: '/mylist',
                 data: {url_give: url},
                 success: function (response) {
                     alert(response['msg'])

@@ -52,7 +52,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '/subscribe',
+                url: '/mylist/new',
                 data: {title_give: title, url_give: url, cate_give: cate, comment_give: comment},
                 success: function (response) {
                     if (response['result'] == 'success') {

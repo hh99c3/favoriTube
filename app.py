@@ -39,9 +39,9 @@ def login():
     msg = request.args.get("msg")
     return render_template('login.html', msg=msg)
 
-@app.route('/sign_in', methods=['POST'])
+# 로그인
+@app.route('/login', methods=['POST'])
 def sign_in():
-    # 로그인
     username_receive = request.form['username_give']
     password_receive = request.form['password_give']
 
@@ -67,7 +67,7 @@ def register():
     return render_template('register.html')
 
 # 회원가입 정보 DB로 POST
-@app.route('/membership/save', methods=['POST'])
+@app.route('/membership', methods=['POST'])
 def sign_up():
     username_receive = request.form['username_give']
     password_receive = request.form['password_give']
@@ -83,7 +83,7 @@ def sign_up():
     return jsonify({'result': 'success'})
 
 # DB에 중복되는 아이디가 있는지 확인
-@app.route('/membership/check_dup', methods=['POST'])
+@app.route('/membership/check-dup', methods=['POST'])
 def check_dup():
     username_receive = request.form['username_give']
     exists = bool(db.users.find_one({"username": username_receive}))
@@ -109,7 +109,7 @@ def recommend():
         return redirect(url_for("home"))
 
 # 추천목록에서 각 키워드로 항목추가
-@app.route("/recommend_add", methods=["POST"])
+@app.route("/mylist/favorite", methods=["POST"])
 def recommend_add():
     token_receive = request.cookies.get('mytoken')
     try:
@@ -146,6 +146,7 @@ def recommend_add():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
+#마이 리스트 페이지
 @app.route('/mylist/<keyword>')
 def mylist(keyword):
     token_receive = request.cookies.get('mytoken')
@@ -170,7 +171,7 @@ def mylist(keyword):
         return redirect(url_for("home"))
 
 #글 수정
-@app.route('/mylist_post' , methods=["POST"])
+@app.route('/mylist' , methods=["POST"])
 def mylist_post():
     token_receive = request.cookies.get('mytoken')
     try:
@@ -190,7 +191,7 @@ def mylist_post():
         return redirect(url_for("home"))
 
 #글 삭제
-@app.route('/mylist_delete' , methods=["POST"])
+@app.route('/mylist' , methods=["DELETE"])
 def mylist_delete():
     token_receive = request.cookies.get('mytoken')
     try:
@@ -205,24 +206,8 @@ def mylist_delete():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
-
 #글 작성
-@app.route('/subscribe')
-def subscribe():
-    token_receive = request.cookies.get('mytoken')
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user_info = db.users.find_one({'username': payload['id']})
-        username = user_info['username']
-        user_interest = user_info['category']
-
-        return render_template('subscribe.html', name=username, interest_list=user_interest)
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for("home"))
-
-
-# 구독추가 정보를 DB로 POST
-@app.route("/subscribe", methods=["POST"])
+@app.route("/mylist/new", methods=["POST"])
 def subscribe_post():
     token_receive = request.cookies.get('mytoken')
     try:
@@ -261,6 +246,21 @@ def subscribe_post():
         db.mylist.insert_one(doc)
 
         return jsonify({'result': 'success', 'msg': '추가 완료!'})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
+
+#글 작성 페이지
+@app.route('/subscribe')
+def subscribe():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({'username': payload['id']})
+        username = user_info['username']
+        user_interest = user_info['category']
+
+        return render_template('subscribe.html', name=username, interest_list=user_interest)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 

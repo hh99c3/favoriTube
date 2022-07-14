@@ -67,7 +67,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/membership/save",
+                url: "/membership",
                 traditional: true,
                 data: {
                     username_give: username,
@@ -108,7 +108,7 @@
             $("#help-id").addClass("is-loading")
             $.ajax({
                 type: "POST",
-                url: "/membership/check_dup",
+                url: "/membership/check-dup",
                 data: {
                     username_give: username
                 },

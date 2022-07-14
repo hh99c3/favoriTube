@@ -33,7 +33,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '/recommend_add',
+                url: '/mylist/favorite',
                 data: {url_give: rmd_url, cate_give: rmd_cate},
                 success: function (response) {
                     if (response['result'] == 'success') {
